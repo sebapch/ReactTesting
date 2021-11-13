@@ -1,54 +1,43 @@
 /* eslint-disable jest/valid-expect */
-import React from 'react';
-import CommentBox from '../CommentBox';
-import { mount } from 'enzyme';
-import Root from 'Root';
+import React from "react";
+import CommentBox from "../CommentBox";
+import { mount } from "enzyme";
+import Root from "Root";
 
 let wrapped;
-beforeEach(()=> {
-    wrapped = mount(
-        <Root>
-    <CommentBox />
+beforeEach(() => {
+  wrapped = mount(
+    <Root>
+      <CommentBox />
     </Root>
-    );
+  );
 });
 
-afterEach(()=> {
-    wrapped.unmount();
+afterEach(() => {
+  wrapped.unmount();
 });
 
+it("has a text area and a button", () => {
+  expect(wrapped.find("textarea").length).toEqual(1);
 
-it('has a text area and a button', () => {
-
-    expect(wrapped.find('textarea').length).toEqual(1);
-
-    expect(wrapped.find('button').length).toEqual(1);
+  expect(wrapped.find("button").length).toEqual(2);
 });
 
-
-describe('the text are', ()=> {
-
-    beforeEach(()=>{
-        wrapped.find('textarea').simulate('change', {
-            target: {value: 'new comment'}
-        });
-        wrapped.update();
+describe("the text are", () => {
+  beforeEach(() => {
+    wrapped.find("textarea").simulate("change", {
+      target: { value: "new comment" },
     });
+    wrapped.update();
+  });
 
-    it('has a text area that users can type in', () => {
+  it("has a text area that users can type in", () => {
+    expect(wrapped.find("textarea").prop("value")).toEqual("new comment");
+  });
 
-
-        expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
-
-    });
-
-    it('when form is submitted, text area gets empied', () => {
-
-        wrapped.find('form').simulate('submit');
-        wrapped.update();
-        expect(wrapped.find('textarea').prop('value')).toEqual('');
-
-    });
-
-
+  it("when form is submitted, text area gets empied", () => {
+    wrapped.find("form").simulate("submit");
+    wrapped.update();
+    expect(wrapped.find("textarea").prop("value")).toEqual("");
+  });
 });
